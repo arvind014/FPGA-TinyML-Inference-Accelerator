@@ -4,7 +4,7 @@ A real-time, fully parallelized TinyML hardware accelerator written in structura
 
 Rather than executing abstract software on an embedded microprocessor, this project builds dedicated physical arithmetic silicon to run low-latency neural network inferences completely inside a single hardware clock domain.
 
-## 🚀 Key Micro-Architectural Highlights
+## Key Micro-Architectural Highlights
 
 * **4-Way Vector MAC Architecture (`mac_unit.v`):** Custom parallel dot-product workhorse running a 4-input signed arithmetic pipeline tree, calculating an 18-bit bit-growth safe accumulation step within a single system clock frame.
 * **4-Way Parallel Interleaved Memory (`nn_core.v`):** Subdivides the 784-byte image array across 4 distinct independent RAM banks (Bank 0–3). By utilizing an address modulo-4 multiplexing matrix, the math engine bypasses standard single-port memory bottlenecks to extract 4 sequential pixels simultaneously.
