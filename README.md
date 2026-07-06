@@ -6,9 +6,14 @@ Rather than executing abstract software on an embedded microprocessor, this proj
 
 ## Key Micro-Architectural Highlights
 
-* **4-Way Vector MAC Architecture (`mac_unit.v`):** Custom parallel dot-product workhorse running a 4-input signed arithmetic pipeline tree, calculating an 18-bit bit-growth safe accumulation step within a single system clock frame.
-* **4-Way Parallel Interleaved Memory (`nn_core.v`):** Subdivides the 784-byte image array across 4 distinct independent RAM banks (Bank 0–3). By utilizing an address modulo-4 multiplexing matrix, the math engine bypasses standard single-port memory bottlenecks to extract 4 sequential pixels simultaneously.
-* **High-Speed Telemetry Pipeline (`uart_rx.v`, `uart_tx.v`):** Implemented an asynchronous serial receiver operating at 115,200 baud to stream 784-byte image payloads into hardware memory over a $\sim$68.06 ms transmission window; integrated a robust start-bit validation mechanism to reject line noise and prevent false FSM triggers.
-* **CDC Metastability Hardening (`uart_rx.v`):** Integrates a localized double-flop shift register synchronization layer to safely step external PC telemetry bits into the local 100 MHz clock domain without timing violations.
-* **Piecewise SoftMax Approximation Engine (`nn_core.v`):** Replaces hardware-heavy floating-point division and Euler’s constant calculation ($e^x$) with an optimized fixed-point bit-shift look-up matrix mapping out reliable 0–99% confidence ratings.
-* **Physical Interface Dashboard (`seven_seg.v`, `top.v`):** Refreshes a multiplexed 4-digit 7-Segment HUD display to continuously project the winning predicted integer on the left and live scalar certainty metrics alongside it.
+**4-Way Vector MAC Architecture (mac_unit.v):** Developed a custom parallel dot-product engine running a 4-input signed arithmetic pipeline tree; engineered an 18-bit bit-growth safe accumulator that eliminates arithmetic overflow while maximizing $F_{max}$ throughput.
+
+**4-Way Parallel Interleaved Memory (nn_core.v):** Subdivided the 784-byte image array across 4 independent RAM banks. Utilized an address multiplexing matrix to bypass standard single-port memory bottlenecks, extracting 4 sequential pixels simultaneously per clock cycle.
+
+**High-Speed Telemetry Pipeline (uart_rx.v, uart_tx.v):** Implemented an asynchronous serial receiver operating at 115,200 baud to stream 784-byte image payloads into hardware memory over a ~68.06 ms transmission window; integrated a robust start-bit validation mechanism to reject line noise and prevent false FSM triggers.
+
+**CDC Metastability Hardening (uart_rx.v):** Integrated a localized double-flop synchronizer layer to safely step external asynchronous PC telemetry bits into the local 100 MHz clock domain, mitigating metastability and violating no setup/hold timing paths.
+
+**Piecewise SoftMax Approximation Engine (nn_core.v):** Replaced hardware-heavy floating-point division and Euler’s constant (e^x) calculations with an optimized fixed-point bit-shift look-up matrix mapping out reliable 0–99% confidence ratings using minimal logic resources.
+
+**Physical Interface Driver (seven_seg.v, top.v):** Authored a resource-optimized, time-multiplexed 4-digit 7-segment display driver to continuously project the winning predicted integer alongside live scalar certainty metrics without inferring a hardware divider.
